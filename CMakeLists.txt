@@ -4,4 +4,5 @@ project(InterviewQuestions)
 # Add subdirectories for each question
 add_subdirectory(sample_question)
 add_subdirectory(factorial)
+add_subdirectory(fibonacci)
 # Repeat for additional questions
