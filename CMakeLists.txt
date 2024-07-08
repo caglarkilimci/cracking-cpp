@@ -8,6 +8,7 @@ add_subdirectory(fibonacci)
 add_subdirectory(fizzbuzz)
 add_subdirectory(prime_number)
 add_subdirectory(reverse_string)
+add_subdirectory(palindrome)
 # Additional questions
 # add_subdirectory(reverse_linked_list)
 # add_subdirectory(merge_sorted_lists)
