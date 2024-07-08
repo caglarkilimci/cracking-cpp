@@ -56,18 +56,18 @@ check_build () {
 }
 
 test () {
-    echo "Testing: $1"
+    echo -e "\e[32mTesting: $1\e[0m"
     if [ "$1" != "all" ]; then
         check_question $1
         cd $1
         check_build .
-        cd build
+        cd buildz
         ctest
     else
         check_build all
         cd build
         for d in */ ; do
-            echo "Testing: $d"
+            echo -e "\e[1;32mTesting: $d\e[0m"
             ctest --test-dir $d
         done
     fi
