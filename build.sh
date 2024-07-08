@@ -61,7 +61,7 @@ test () {
         check_question $1
         cd $1
         check_build .
-        cd buildz
+        cd build
         ctest
     else
         check_build all
