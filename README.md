@@ -44,3 +44,25 @@ To build and run the questions in the `cracking-cpp` collection, follow these st
         - `./sample_question/sample_question` (replace `sample_question` with the appropriate question name)
 
 By following these steps, you can successfully build and run the questions in the `cracking-cpp` project.
+
+## Building, Testing, and Cleaning the Questions Using a Script
+
+To simplify the process of building, testing, and cleaning the questions in the `cracking-cpp` collection, a script called `build.sh` is provided. Here is how you can use the script:
+
+```bash
+$ ./build.sh -h
+```
+
+The script supports the following options:
+
+- `-h`: Print the help message.
+
+You can use the script with the following commands:
+
+- `build`: Build all questions.
+- `test`: Run tests for all questions.
+- `clean`: Clean build files.
+
+Additionally, you can specify a question using the `-q` option. By default, the script will perform the specified command for all questions. To specify a specific question, provide the name of the question after the `-q` option.
+
+By using the `build.sh` script, you can easily build, test, and clean the questions in the `cracking-cpp` project.
