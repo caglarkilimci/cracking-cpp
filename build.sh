@@ -6,18 +6,19 @@ usage () {
     echo "                                                  "
     echo "Build Script for Cracking CPP Questions           "
     echo "                                                  "
-    echo "Usage: $0 [OPTIONS] <command>                     "
+    echo "Usage: $0 [OPTION] <command>                      "
     echo "                                                  "
     echo "OPTIONS:                                          "
-    echo "  -h          Print this help message             "
-    echo "  -q          Specify question:                   "
-    echo "                 - all (default)                  "
-    echo "                 - name of the question           "
+    echo "  -h             Print this help message          "
+    echo "  -q             Specify question:                "
+    echo "                  - all (default)                 "
+    echo "                  - name of the question          "
     echo "                                                  "
     echo "Commands:                                         "
-    echo "  build       Build all questions                 "
-    echo "  test        Run tests for all questions         "
-    echo "  clean       Clean build files                   "
+    echo "  build          Build question(s)                "
+    echo "  test           Run test(s) for question(s)      "
+    echo "  clean          Clean build file(s)              "
+    echo "  create <name>  Create a new question            "
     echo "                                                  "
 }
 
@@ -78,8 +79,31 @@ clean () {
     if [ "$1" != "all" ]; then
         check_question $1
         cd $1
+        rm -rf build
+        cd ..
+    else
+        rm -rf build
     fi
-    rm -rf build
+}
+
+create () {
+    echo "Creating: $1"
+    mkdir -p $1
+    SAMPLE_NAME="sample_c"
+    clean $SAMPLE_NAME
+    cp -r $SAMPLE_NAME/* $1
+    mv $1/$SAMPLE_NAME.c $1/$1.c
+    mv $1/$SAMPLE_NAME.h $1/$1.h
+    mv $1/test_$SAMPLE_NAME.c $1/test_$1.c
+    sed -i "s/$SAMPLE_NAME/$1/g" $1/CMakeLists.txt
+    sed -i "s/$SAMPLE_NAME/$1/g" $1/$1.c
+    UPPER_SAMPLE_NAME=$(echo "$SAMPLE_NAME" | awk '{ print toupper($0) }')
+    UPPER_NAME=$(echo "$1" | awk '{ print toupper($0) }')
+    sed -i "s/$UPPER_SAMPLE_NAME/$UPPER_NAME/g" $1/$1.h
+    sed -i "s/$SAMPLE_NAME/$1/g" $1/test_$1.c
+    echo "add_subdirectory($1)" >> CMakeLists.txt
+
+    echo "Question created: $1"
 }
 
 ##############################################
@@ -91,7 +115,7 @@ if [ $# -eq 0 ]; then
     exit $NO_COMMAND_FOUND
 fi
 
-QUESTIONS="all"
+QUESTION="all"
 
 # Get options
 SHIFTCOUNT=0
@@ -103,7 +127,7 @@ while getopts ":h?:q:" opt; do
             exit 0
             ;;
         q)
-            QUESTIONS=$OPTARG
+            QUESTION=$OPTARG
             SHIFTCOUNT=$(( $SHIFTCOUNT+2 ))
             ;;
         \?)
@@ -129,17 +153,35 @@ echo "Command: $1"
 while true ; do
     case "$1" in
         build)
-            build "$QUESTIONS"
+            build "$QUESTION"
             shift
             break
             ;;
         test)
-            test "$QUESTIONS"
+            test "$QUESTION"
             shift
             break
             ;;
         clean)
-            clean "$QUESTIONS"
+            clean "$QUESTION"
+            shift
+            break
+            ;;
+        create)
+            if [ ! -z "$2" ]; then
+                QUESTION=$2
+            fi
+            if [ "$QUESTION" == "all" ]; then
+                echo "Error: Question name not provided."
+                exit $INVALID_COMMAND
+            fi
+            if [ -d "$QUESTION" ]; then
+                echo "Error: Question already exists."
+                exit $INVALID_COMMAND
+            fi
+            echo "Creating question: $QUESTION"
+            create "$QUESTION"
+            shift
             shift
             break
             ;;
