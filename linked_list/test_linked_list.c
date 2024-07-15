@@ -104,10 +104,47 @@ void test_reverseList() {
     freeLinkedList(head);
 }
 
+void test_mergeTwoLists() {
+    printf("Test mergeTwoLists\n");
+
+    // Create two linked lists
+    int values1[] = {1, 3, 5};
+    struct ListNode* list1 = createLinkedList(values1, sizeof(values1) / sizeof(values1[0]));
+
+    int values2[] = {2, 4, 6};
+    struct ListNode* list2 = createLinkedList(values2, sizeof(values2) / sizeof(values2[0]));
+
+    // Print the original linked lists
+    printf("List 1: ");
+    printLinkedList(list1);
+    printf("List 2: ");
+    printLinkedList(list2);
+
+    // Merge the two linked lists
+    struct ListNode* mergedList = mergeTwoLists(list1, list2);
+
+    // Verify the merged linked list
+    assert(mergedList->val == 1);
+    assert(mergedList->next->val == 2);
+    assert(mergedList->next->next->val == 3);
+    assert(mergedList->next->next->next->val == 4);
+    assert(mergedList->next->next->next->next->val == 5);
+    assert(mergedList->next->next->next->next->next->val == 6);
+    assert(mergedList->next->next->next->next->next->next == NULL);
+
+    // Print the merged linked list
+    printf("Merged list: ");
+    printLinkedList(mergedList);
+
+    // Free the memory allocated for the linked lists
+    freeLinkedList(mergedList);
+}
+
 int main() {
     test_deleteNode();
     test_removeNthFromEnd();
     test_createLinkedList();
     test_reverseList();
+    test_mergeTwoLists();
     return 0;
 }

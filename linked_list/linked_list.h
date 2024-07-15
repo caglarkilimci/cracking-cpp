@@ -48,4 +48,11 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 // Given the head of a singly linked list, reverse the list, and return the reversed list.
 struct ListNode* reverseList(struct ListNode* head);
 
+// https://leetcode.com/explore/interview/card/top-interview-questions-easy/93/linked-list/771/
+
+// Merge Two Sorted Lists
+// Merge two sorted linked lists and return it as a sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2);
+
 #endif // LINKED_LIST_H

@@ -95,3 +95,56 @@ struct ListNode* reverseList(struct ListNode* head) {
     return reversedList;
 }
 
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
+    struct ListNode* head = NULL;
+    struct ListNode* current = NULL;
+    
+    while (list1 != NULL && list2 != NULL) {
+        struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+        if (list1->val < list2->val) {
+            node->val = list1->val;
+            list1 = list1->next;
+        } else {
+            node->val = list2->val;
+            list2 = list2->next;
+        }
+        node->next = NULL;
+        if (head == NULL) {
+            head = node;
+            current = node;
+        } else {
+            current->next = node;
+            current = node;
+        }
+    }
+    
+    while (list1 != NULL) {
+        struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+        node->val = list1->val;
+        node->next = NULL;
+        if (head == NULL) {
+            head = node;
+            current = node;
+        } else {
+            current->next = node;
+            current = node;
+        }
+        list1 = list1->next;
+    }
+    
+    while (list2 != NULL) {
+        struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+        node->val = list2->val;
+        node->next = NULL;
+        if (head == NULL) {
+            head = node;
+            current = node;
+        } else {
+            current->next = node;
+            current = node;
+        }
+        list2 = list2->next;
+    }
+    
+    return head;
+}
