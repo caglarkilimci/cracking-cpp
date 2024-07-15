@@ -41,4 +41,11 @@ void deleteNode(struct ListNode* node);
 
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 
+
+// https://leetcode.com/explore/interview/card/top-interview-questions-easy/93/linked-list/560/
+
+// Reverse Linked List
+// Given the head of a singly linked list, reverse the list, and return the reversed list.
+struct ListNode* reverseList(struct ListNode* head);
+
 #endif // LINKED_LIST_H

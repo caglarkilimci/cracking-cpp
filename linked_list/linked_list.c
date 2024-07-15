@@ -73,3 +73,25 @@ struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
     
     return head;       
 }
+
+struct ListNode* reverseList(struct ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    struct ListNode* reversedList = head;
+    head = head->next;
+    reversedList->next = NULL;
+    
+    struct ListNode* temp = NULL;
+    
+    while (head != NULL) {
+        temp = (head->next) ? head->next : NULL;
+        head->next = reversedList;
+        reversedList = head;
+        head = (temp) ? temp : NULL;
+    }
+    
+    return reversedList;
+}
+
