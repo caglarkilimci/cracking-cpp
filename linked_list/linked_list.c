@@ -2,20 +2,21 @@
 #include <stdlib.h>
 #include "linked_list.h"
 
-struct ListNode* createLinkedList(int val1, int val2, int val3) {
-    struct ListNode* head = malloc(sizeof(struct ListNode));
-    head->val = val1;
-
-    struct ListNode* second = malloc(sizeof(struct ListNode));
-    second->val = val2;
-
-    struct ListNode* third = malloc(sizeof(struct ListNode));
-    third->val = val3;
-
-    head->next = second;
-    second->next = third;
-    third->next = NULL;
-
+struct ListNode* createLinkedList(int values[], int size) {
+    struct ListNode* head = NULL;
+    struct ListNode* current = NULL;
+    for (int i=0; i<size; i++) {
+        struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+        node->val = values[i];
+        node->next = NULL;
+        if (head == NULL) {
+            head = node;
+            current = node;
+        } else {
+            current->next = node;
+            current = node;
+        }
+    }
     return head;
 }
 
@@ -44,4 +45,31 @@ void deleteNode(struct ListNode* node) {
     node->val = nextNode->val;
     node->next = nextNode->next;
     free(nextNode);
+}
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
+    
+    struct ListNode* fastNode = head;
+    for (int i=0; i<n; i++) {
+        fastNode = fastNode->next;
+    }
+    
+    if (fastNode == NULL) {
+        // Need to remove head
+        return head->next;
+    }
+    
+    // We need to move once more to delete the next node
+    fastNode = fastNode->next;
+    
+    struct ListNode* processing = head;
+    while (fastNode != NULL) {
+        processing = processing->next;
+        fastNode = fastNode->next;
+    }
+    
+    // We need to delete next node of the processing node
+    processing->next = processing->next->next;
+    
+    return head;       
 }

@@ -8,7 +8,7 @@ struct ListNode {
 };
 
 // Create a linked list with the given values
-struct ListNode* createLinkedList(int val1, int val2, int val3);
+struct ListNode* createLinkedList(int values[], int size);
 
 // Free the memory allocated for the linked list
 void freeLinkedList(struct ListNode* head);
@@ -34,5 +34,11 @@ void printLinkedList(struct ListNode* head);
 void deleteNode(struct ListNode* node);
 
 
+// https://leetcode.com/explore/interview/card/top-interview-questions-easy/93/linked-list/603/
+
+// Remove Nth Node From End of List
+// Given the head of a linked list, remove the nth node from the end of the list and return its head.
+
+struct ListNode* removeNthFromEnd(struct ListNode* head, int n);
 
 #endif // LINKED_LIST_H
