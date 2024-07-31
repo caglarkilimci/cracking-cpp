@@ -15,10 +15,11 @@ usage () {
     echo "                  - name of the question          "
     echo "                                                  "
     echo "Commands:                                         "
-    echo "  build          Build question(s)                "
-    echo "  test           Run test(s) for question(s)      "
-    echo "  clean          Clean build file(s)              "
-    echo "  create <name>  Create a new question            "
+    echo "  build              Build question(s)            "
+    echo "  test               Run test(s) for question(s)  "
+    echo "  clean              Clean build file(s)          "
+    echo "  create <name>      Create a new question in C   "
+    echo "  cpp-create <name>  Create a new question in CPP "
     echo "                                                  "
 }
 
@@ -106,6 +107,26 @@ create () {
     echo "Question created: $1"
 }
 
+cpp_create () {
+    echo "Creating cpp: $1"
+    mkdir -p $1
+    SAMPLE_NAME="sample_cpp"
+    clean $SAMPLE_NAME
+    cp -r $SAMPLE_NAME/* $1
+    mv $1/$SAMPLE_NAME.cpp $1/$1.cpp
+    mv $1/$SAMPLE_NAME.hpp $1/$1.hpp
+    mv $1/test_$SAMPLE_NAME.cpp $1/test_$1.cpp
+    sed -i "s/$SAMPLE_NAME/$1/g" $1/CMakeLists.txt
+    sed -i "s/$SAMPLE_NAME/$1/g" $1/$1.cpp
+    UPPER_SAMPLE_NAME=$(echo "$SAMPLE_NAME" | awk '{ print toupper($0) }')
+    UPPER_NAME=$(echo "$1" | awk '{ print toupper($0) }')
+    sed -i "s/$UPPER_SAMPLE_NAME/$UPPER_NAME/g" $1/$1.hpp
+    sed -i "s/$SAMPLE_NAME/$1/g" $1/test_$1.cpp
+    echo "add_subdirectory($1)" >> CMakeLists.txt
+
+    echo "Question created in CPP: $1"
+}
+
 ##############################################
 # Main
 
@@ -181,6 +202,24 @@ while true ; do
             fi
             echo "Creating question: $QUESTION"
             create "$QUESTION"
+            shift
+            shift
+            break
+            ;;
+        cpp-create)
+            if [ ! -z "$2" ]; then
+                QUESTION=$2
+            fi
+            if [ "$QUESTION" == "all" ]; then
+                echo "Error: Question name not provided."
+                exit $INVALID_COMMAND
+            fi
+            if [ -d "$QUESTION" ]; then
+                echo "Error: Question already exists."
+                exit $INVALID_COMMAND
+            fi
+            echo "Creating CPP question: $QUESTION"
+            cpp_create "$QUESTION"
             shift
             shift
             break
